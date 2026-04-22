@@ -12,4 +12,6 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     Page<Vehicle> findAllByActiveTrue(Pageable pageable);
 
     boolean existsByPlateNumber(String plateNumber);
+
+    java.util.Optional<Vehicle> findFirstByVehicleTypeIgnoreCaseAndActiveTrue(String vehicleType);
 }

@@ -20,6 +20,8 @@ public class BookingResponse {
     private LocalDateTime pickupDatetime;
     private LocalDateTime dropoffDatetime;
     private Integer passengerCount;
+    private String passengerName;
+    private String passengerPhone;
     private String specialInstructions;
     private BigDecimal totalAmount;
     private String currency;

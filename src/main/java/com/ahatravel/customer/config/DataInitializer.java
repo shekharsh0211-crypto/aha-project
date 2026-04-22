@@ -96,11 +96,10 @@ public class DataInitializer implements CommandLineRunner {
     private void seedVehicles() {
         if (vehicleRepository.count() > 0) return;
         List<Vehicle> vehicles = List.of(
-                Vehicle.builder().plateNumber("MH01AB1234").make("Toyota").model("Sedan").year(2022).vehicleType("SEDAN").capacity(4).build(),
-                Vehicle.builder().plateNumber("MH02CD5678").make("Toyota").model("SUV").year(2023).vehicleType("SUV").capacity(7).build(),
-                Vehicle.builder().plateNumber("MH03EF9012").make("Mercedes").model("Luxury").year(2023).vehicleType("LUXURY").capacity(4).build(),
-                Vehicle.builder().plateNumber("MH04GH3456").make("Force").model("Van").year(2021).vehicleType("VAN").capacity(12).build(),
-                Vehicle.builder().plateNumber("MH05IJ7890").make("Maruti").model("Hatchback").year(2022).vehicleType("SEDAN").capacity(4).build()
+                Vehicle.builder().plateNumber("MH01AB1234").make("Maruti").model("Swift Dzire").year(2022).vehicleType("Sedan").capacity(4).active(true).build(),
+                Vehicle.builder().plateNumber("MH02CD5678").make("Toyota").model("Innova Crysta").year(2023).vehicleType("Innova Crysta").capacity(7).active(true).build(),
+                Vehicle.builder().plateNumber("MH03EF9012").make("Maruti").model("Ertiga").year(2022).vehicleType("MUV/Ertiga").capacity(7).active(true).build(),
+                Vehicle.builder().plateNumber("MH04GH3456").make("Mercedes").model("E-Class").year(2023).vehicleType("Luxury").capacity(4).active(true).build()
         );
         vehicleRepository.saveAll(vehicles);
         log.info("Sample vehicles seeded.");
@@ -113,23 +112,19 @@ public class DataInitializer implements CommandLineRunner {
         if (admin == null) return;
 
         List<Vehicle> vehicles = vehicleRepository.findAll();
-        Map<String, Vehicle> byType = Map.of(
-                "SEDAN",   vehicles.stream().filter(v -> v.getVehicleType().equals("SEDAN")).findFirst().orElse(null),
-                "SUV",     vehicles.stream().filter(v -> v.getVehicleType().equals("SUV")).findFirst().orElse(null),
-                "LUXURY",  vehicles.stream().filter(v -> v.getVehicleType().equals("LUXURY")).findFirst().orElse(null),
-                "VAN",     vehicles.stream().filter(v -> v.getVehicleType().equals("VAN")).findFirst().orElse(null)
-        );
+        Map<String, Vehicle> byType = new java.util.HashMap<>();
+        vehicles.forEach(v -> byType.put(v.getVehicleType(), v));
 
         record BookingSeed(String ref, String pickup, String dropoff, String datetime, String vtype,
                            BookingStatus status, BigDecimal amount, String cancelReason) {}
 
         List<BookingSeed> seeds = List.of(
-            new BookingSeed("BK-20240342", "Downtown Office",     "International Airport",  "2024-04-25T10:10:00", "SEDAN",  BookingStatus.COMPLETED, new BigDecimal("347.00"),  null),
-            new BookingSeed("BK-20240369", "Pawa Road Station",   "Airport Terminal 1",     "2024-04-22T09:00:00", "SUV",    BookingStatus.COMPLETED, new BigDecimal("820.00"),  null),
-            new BookingSeed("BK-20240385", "CST Station",         "Bandra West",            "2024-04-18T12:00:00", "SEDAN",  BookingStatus.COMPLETED, new BigDecimal("360.00"),  null),
-            new BookingSeed("BK-20240371", "Goregaon East",       "BKC",                    "2024-04-18T08:30:00", "SEDAN",  BookingStatus.CANCELLED, null, "Change of plans"),
-            new BookingSeed("BK-20240412", "Hotel Taj Colaba",    "Chhatrapati Airport",    "2024-04-28T06:00:00", "LUXURY", BookingStatus.CONFIRMED,  new BigDecimal("1200.00"), null),
-            new BookingSeed("BK-20240420", "Andheri Station",     "Powai",                  "2024-04-30T14:30:00", "SUV",    BookingStatus.PENDING,    new BigDecimal("450.00"),  null)
+            new BookingSeed("BK-20240342", "Downtown Office",     "International Airport",  "2024-04-25T10:10:00", "Sedan",         BookingStatus.COMPLETED, new BigDecimal("347.00"),  null),
+            new BookingSeed("BK-20240369", "Pawa Road Station",   "Airport Terminal 1",     "2024-04-22T09:00:00", "Innova Crysta", BookingStatus.COMPLETED, new BigDecimal("820.00"),  null),
+            new BookingSeed("BK-20240385", "CST Station",         "Bandra West",            "2024-04-18T12:00:00", "Sedan",         BookingStatus.COMPLETED, new BigDecimal("360.00"),  null),
+            new BookingSeed("BK-20240371", "Goregaon East",       "BKC",                    "2024-04-18T08:30:00", "MUV/Ertiga",    BookingStatus.CANCELLED, null, "Change of plans"),
+            new BookingSeed("BK-20240412", "Hotel Taj Colaba",    "Chhatrapati Airport",    "2024-04-28T06:00:00", "Luxury",        BookingStatus.CONFIRMED,  new BigDecimal("1200.00"), null),
+            new BookingSeed("BK-20240420", "Andheri Station",     "Powai",                  "2024-04-30T14:30:00", "Innova Crysta", BookingStatus.PENDING,    new BigDecimal("450.00"),  null)
         );
 
         for (BookingSeed s : seeds) {

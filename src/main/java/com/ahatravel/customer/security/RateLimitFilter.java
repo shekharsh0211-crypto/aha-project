@@ -41,7 +41,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             redisTemplate.expire(key, Duration.ofMinutes(1));
         }
 
-        if (count != null && count > requestsPerMinute) {
+        /*if (count != null && count > requestsPerMinute) {
             log.warn("Rate limit exceeded for IP: {}", ip);
             response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -49,7 +49,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             response.setHeader("X-RateLimit-Remaining", "0");
             response.getWriter().write("{\"success\":false,\"message\":\"Rate limit exceeded. Try again later.\"}");
             return;
-        }
+        }*/
 
         if (count != null) {
             response.setHeader("X-RateLimit-Limit", String.valueOf(requestsPerMinute));

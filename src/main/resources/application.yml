@@ -60,7 +60,7 @@ jwt:
 
 app:
   rate-limit:
-    requests-per-minute: 100
+    requests-per-minute: 1000
   ref-data:
     cache-ttl-seconds: 3600             # 1 hour
 

@@ -55,6 +55,9 @@ public class BookingService {
         if (request.getVehicleId() != null) {
             vehicle = vehicleRepository.findById(request.getVehicleId())
                     .orElseThrow(() -> new ResourceNotFoundException("Vehicle", request.getVehicleId()));
+        } else if (request.getVehicleType() != null && !request.getVehicleType().isBlank()) {
+            vehicle = vehicleRepository.findFirstByVehicleTypeIgnoreCaseAndActiveTrue(request.getVehicleType())
+                    .orElse(null);
         }
 
         Booking booking = Booking.builder()
@@ -65,6 +68,8 @@ public class BookingService {
                 .dropoffLocation(request.getDropoffLocation())
                 .pickupDatetime(request.getPickupDatetime())
                 .passengerCount(request.getPassengerCount())
+                .passengerName(request.getPassengerName())
+                .passengerPhone(request.getPassengerPhone())
                 .specialInstructions(request.getSpecialInstructions())
                 .totalAmount(request.getTotalAmount())
                 .currency(request.getCurrency() != null ? request.getCurrency() : "USD")
@@ -212,6 +217,8 @@ public class BookingService {
                 .pickupDatetime(b.getPickupDatetime())
                 .dropoffDatetime(b.getDropoffDatetime())
                 .passengerCount(b.getPassengerCount())
+                .passengerName(b.getPassengerName())
+                .passengerPhone(b.getPassengerPhone())
                 .specialInstructions(b.getSpecialInstructions())
                 .totalAmount(b.getTotalAmount())
                 .currency(b.getCurrency())

@@ -25,10 +25,22 @@ public class CreateBookingRequest {
     @Max(value = 50)
     private Integer passengerCount;
 
+    @Size(max = 200)
+    private String passengerName;
+
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Invalid phone number")
+    private String passengerPhone;
+
     @Size(max = 1000)
     private String specialInstructions;
 
     private Long vehicleId;
+
+    @Size(max = 100)
+    private String vehicleType;
+
+    @Size(max = 100)
+    private String tripType;
 
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal totalAmount;
